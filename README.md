@@ -39,7 +39,6 @@ Blango incorporates several Django REST Framework features, showcasing advanced 
 - Python 3.x
 - Django
 - Django REST Framework
-- [List any additional prerequisites or dependencies]
 
 ### Installation
 
