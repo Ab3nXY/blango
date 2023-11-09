@@ -1,0 +1,10 @@
+# .gitignore
+
+# Ignore the virtual environment
+venv/
+
+# Ignore database files
+db.sqlite3
+
+# Ignore other sensitive configuration files
+*.env
