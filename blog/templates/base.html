@@ -1,33 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: #121212; /* Dark background color */
+            color: #fff;
+        }
+
+        .navbar {
+            background-color: #1E1E1E; /* Darker background color */
+            border-bottom: 1px solid #2C2C2C;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #61dafb; /* Bootstrap primary color */
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            color: #0d6efd; /* Bootstrap primary hover color */
+        }
+
+        .container-fluid {
+            background-color: #1E1E1E; /* Darker background color */
+            color: #fff;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .jumbotron {
+            background-color: #343a40; /* Darker background color for jumbotron */
+            padding: 2rem 2rem;
+            margin-top: 30px;
+            border-radius: 15px;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd; /* Bootstrap primary color for buttons */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Bootstrap primary hover color for buttons */
+        }
+
+        /* Add more styles based on your preference */
+    </style>
+
     <title>{% block title %}Welcome to Blango{% endblock %}</title>
-  </head>
-  <body>
-   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Blango Home</a>
-        <div class="d-flex">
-            {% if request.user.is_active %}
-                <a class="nav-link" href="/post-table">Post Table</a>
-                <a class="nav-link" href="{% url "profile" %}">Profile</a>
-                <a class="nav-link" href="{% url "logout" %}">Log Out</a>
-            {% else %}
-                <a class="nav-link" href="{% url "django_registration_register" %}">Register</a>
-                <a class="nav-link" href="{% url "login" %}">Log In</a>
-            {% endif %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Blango Home</a>
+            <div class="d-flex">
+                {% if request.user.is_active %}
+                    <a class="nav-link" href="/api/v1">DRF</a>
+                    <a class="nav-link" href="/post-table">Post Table</a>
+                    <a class="nav-link" href="{% url "profile" %}">Profile</a>
+                    <a class="nav-link" href="{% url "logout" %}">Log Out</a>
+                {% else %}
+                    <a class="nav-link" href="{% url "django_registration_register" %}">Register</a>
+                    <a class="nav-link" href="{% url "login" %}">Log In</a>
+                {% endif %}
+            </div>
         </div>
+    </nav>
+
+    <div class="container-fluid">
+        {% block content %}
+
+        {% endblock %}
     </div>
-</nav>
 
-   <div class="container-fluid">
-    {% block content %}
-
-    {% endblock %}
-   </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  </body>
+</body>
 </html>
