@@ -13,10 +13,11 @@ import os
 from pathlib import Path
 from configurations import Configuration
 from configurations import values
-import dj_database_url
 from datetime import timedelta
-from decouple import config
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
 
 class Dev(Configuration):
@@ -29,7 +30,7 @@ class Dev(Configuration):
     # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = config('SECRET_KEY', default='your_default_secret_key')
+    SECRET_KEY = os.getenv('SECRET_KEY', 'your_default_secret_key')
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
@@ -127,11 +128,10 @@ class Dev(Configuration):
     # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
     DATABASES = {
-      "default": dj_database_url.config(default=f"sqlite:///{BASE_DIR}/db.sqlite3"),
-      "alternative": dj_database_url.config(
-          "ALTERNATIVE_DATABASE_URL",
-          default=f"sqlite:///{BASE_DIR}/alternative_db.sqlite3",
-      ),
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
 
 

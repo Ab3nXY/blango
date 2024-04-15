@@ -21,7 +21,7 @@ schema_view = get_schema_view(
         default_version="v1",
         description="API for Blango Blog",
     ),
-    url=f"https://{os.environ.get('CODIO_HOSTNAME')}-8000.codio.io/api/v1/",
+    url=f"http://localhost:8000/api/v1/",
     public=True,
 )
 

@@ -9,10 +9,6 @@ from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
-def get_ip(request):
-  from django.http import HttpResponse
-  return HttpResponse(request.META['REMOTE_ADDR'])
-
 
 def index(request):
     posts = Post.objects.filter(published_at__lte=timezone.now()).select_related("author")

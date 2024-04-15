@@ -1,42 +1,44 @@
 {% extends "base.html" %}
 {% load blog_extras %}
+
 {% block content %}
+  <div class="container mt-5">
+    <h2>{{ post.title }}</h2>
 
-
-<h2>{{ post.title }}</h2>
-{% row %}
-    {% col %}
+    <div class="row mb-4">
+      <div class="col">
         {% include "blog/post-byline.html" %}
-    {% endcol %}
-{% endrow %}
-{% if post.hero_image %}
-    {% row %}
-        {% col %}
-            <img class="img-fluid" src="{{ post.hero_image.url }}">
-        {% endcol %}
-    {% endrow %}
-{% endif %}
+      </div>
+    </div>
 
-{% row %}
-    {% col %}
+    {% if post.hero_image %}
+      <div class="mb-4">
+        <img src="{{ post.hero_image.url }}" class="img-fluid rounded" alt="{{ post.title }}">
+      </div>
+    {% endif %}
+
+    <div class="row">
+      <div class="col">
         {{ post.content|safe }}
-    {% endcol %}
-{% endrow %}
+      </div>
+    </div>
 
-{% row %}
-    {% col %}
+    <div class="row mt-5">
+      <div class="col">
+        <h4>Recent Posts</h4>
         {% recent_posts post %}
-    {% endcol %}
-{% endrow %}
+      </div>
+    </div>
 
-{% if post.author.profile %}
-    {% row %}
-        {% col %}
-            <h4>About the author</h4>
-            <p>{{ post.author.profile.bio }}</p>
-        {% endcol %}
-    {% endrow %}
-{% endif %}
+    {% if post.author.profile %}
+      <div class="row mt-5">
+        <div class="col">
+          <h4>About the Author</h4>
+          <p>{{ post.author.profile.bio }}</p>
+        </div>
+      </div>
+    {% endif %}
 
-{% include "blog/post-comments.html" %}
+    {% include "blog/post-comments.html" %}
+  </div>
 {% endblock %}

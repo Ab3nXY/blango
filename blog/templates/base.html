@@ -53,15 +53,14 @@
         /* Add more styles based on your preference */
     </style>
 
-    <title>{% block title %}Welcome to Blango{% endblock %}</title>
+    <title>{% block title %}Blog{% endblock %}</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Blango Home</a>
+            <a class="navbar-brand" href="/">Home</a>
             <div class="d-flex">
                 {% if request.user.is_active %}
-                    <a class="nav-link" href="/api/v1">DRF</a>
                     <a class="nav-link" href="/post-table">Post Table</a>
                     <a class="nav-link" href="{% url "profile" %}">Profile</a>
                     <a class="nav-link" href="{% url "logout" %}">Log Out</a>
