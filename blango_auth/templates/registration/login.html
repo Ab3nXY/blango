@@ -16,18 +16,19 @@
 {% endrow %}
 
 {% row "justify-content-center" %}
-    {% col "col-md-6" %}
-        <form method="post" action="{% url "login" %}">
+    {% col "col-md-4" %}
+        <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-primary">Log In</button>
         <input type="hidden" name="next" value="{{ next }}">
         </form>
+        <div style="text-align: center;">
+            <a style="text-decoration: none;" href="{% url 'password_reset' %}">Forgot password?</a>
+            <br>
+            <a style="text-decoration: none;" href="{% url 'google_login' %}">Log in with Google</a>
+        </div>
 
-        <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-        <p>
-            <a href="{% url "google_login" %}">Log in with Google</a>
-        </p>
 
     {% endcol %}
 {% endrow %}

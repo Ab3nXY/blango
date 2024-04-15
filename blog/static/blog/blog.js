@@ -5,23 +5,25 @@ class PostRow extends React.Component {
     let thumbnail
 
     if (post.hero_image.thumbnail) {
-      thumbnail = <img src={post.hero_image.thumbnail}/>
+      thumbnail = <img src={post.hero_image.thumbnail} /> 
     } else {
       thumbnail = '-'
     }
 
     return <tr>
-      <td>{post.title}</td>
-      <td>
+      <td style={{ color: 'white' }}>{post.title}</td>
+      <td style={{ color: 'white' }}>
         {thumbnail}
       </td>
-      <td>{post.tags.join(', ')}</td>
-      <td>{post.slug}</td>
-      <td>{post.summary}</td>
-      <td><a href={'/post/' + post.slug + '/'}>View</a></td>
+      <td style={{ color: 'white' }}>{post.tags.join(', ')}</td>
+      <td style={{ color: 'white' }}>{post.slug}</td>
+      <td style={{ color: 'white' }}>{post.summary}</td>
+      <td><a href={'/post/' + post.slug + '/'} className="btn btn-primary">View</a></td> 
     </tr>
   }
 }
+
+
 
 class PostTable extends React.Component {
   state = {
@@ -70,7 +72,7 @@ class PostTable extends React.Component {
 
     return <table className="table table-striped table-bordered mt-2">
       <thead>
-      <tr>
+      <tr style={{ color: 'lightgreen' }}>
         <th>Title</th>
         <th>Image</th>
         <th>Tags</th>

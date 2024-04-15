@@ -54,13 +54,7 @@ class Dev(Configuration):
     ACCOUNT_EMAIL_REQUIRED = True
     ACCOUNT_USERNAME_REQUIRED = False
     ACCOUNT_AUTHENTICATION_METHOD = "email"
-
-
-
-    MEDIA_ROOT = BASE_DIR / "media"
-    MEDIA_URL = "/media/"
-
-
+    LOGOUT_REDIRECT_URL = 'index'
 
 
     # Application definition
@@ -95,10 +89,10 @@ class Dev(Configuration):
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
-        #'django.middleware.csrf.CsrfViewMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
-        #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
         "debug_toolbar.middleware.DebugToolbarMiddleware",
         'allauth.account.middleware.AccountMiddleware'
     ]
@@ -173,7 +167,15 @@ class Dev(Configuration):
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+    # STATICFILES_DIRS = [
+    #     os.path.join(BASE_DIR, "static"),
+    # ]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     STATIC_URL = '/static/'
+
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
+
 
     # Default primary key field type
     # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -21,7 +21,7 @@ schema_view = get_schema_view(
         default_version="v1",
         description="API for Blango Blog",
     ),
-    url=f"http://localhost:8000/api/v1/",
+    url=f"/api/v1/",
     public=True,
 )
 

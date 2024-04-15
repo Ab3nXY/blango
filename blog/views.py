@@ -6,6 +6,10 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from blog.forms import CommentForm
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from .forms import PostForm 
+from django.utils import timezone
+
 
 logger = logging.getLogger(__name__)
 
@@ -45,4 +49,16 @@ def post_table(request):
         request, "blog/post-table.html", {"post_list_url": reverse("post-list")}
     )
 
-
+@login_required
+def create_blog(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user  # Assign the current user as the author
+            post.save()
+            return redirect('blog-post-detail', slug=post.slug)  # Redirect to post detail page
+    else:
+        initial_data = {'author': request.user, 'published_at': timezone.now()}
+        form = PostForm(initial=initial_data)
+    return render(request, 'blog/create_blog.html', {'form': form})

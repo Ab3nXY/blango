@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-12">
+  <h2>New Blog</h2>
+  <form method="post" enctype="multipart/form-data" class="mt-4">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <!-- Include jQuery and jQuery UI for datepicker -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.css"></script>
+
+    <script>
+      $(function() {
+        $("#id_published_at").datepicker({
+          dateFormat: 'yy-mm-dd ',  // Format for the datepicker
+          changeMonth: true,       // Enable month selection
+          changeYear: true,        // Enable year selection
+          showButtonPanel: true,   // Show today and now buttons
+          onClose: function(dateText, inst) {
+            // Function to set the date value when selecting a date
+            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay));
+          }
+        });
+
+        // Add "Now" button
+        $('<button type="button" class="ui-datepicker-now">Now</button>')
+          .appendTo($('.ui-datepicker-buttonpane'))
+          .click(function() {
+            $("#id_published_at").datepicker('setDate', new Date());
+          });
+
+        // Add "Today" button
+        $('<button type="button" class="ui-datepicker-today">Today</button>')
+          .appendTo($('.ui-datepicker-buttonpane'))
+          .click(function() {
+            $("#id_published_at").datepicker('setDate', new Date());
+          });
+      });
+    </script>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  </form>
+</div>
+{% endblock %}
