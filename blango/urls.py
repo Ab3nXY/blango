@@ -15,6 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", blog.views.index, name="index"),
     path("post/<slug>/", blog.views.post_detail, name="blog-post-detail"),
+    path('post/<slug:slug>/delete/', blog.views.delete_blog, name='delete_blog'),
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/", include("allauth.urls")),
     path("accounts/profile/", blango_auth.views.profile, name="profile"),

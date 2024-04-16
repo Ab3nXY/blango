@@ -44,9 +44,21 @@ def post_detail(request, slug):
       request, "blog/post-detail.html", {"post": post, "comment_form": comment_form}
       )
 
+from django.contrib import messages
+
+@login_required
+def delete_blog(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'Post deleted successfully.')
+        return redirect('index')  # Redirect to index page or any other page
+    return render(request, 'blog/post-detail.html', {'post': post})
+
+
 def post_table(request):
     return render(
-        request, "blog/post-table.html", {"post_list_url": reverse("post-list")}
+        request, "blog/post-detail.html", {"post_list_url": reverse("post-list")}
     )
 
 @login_required

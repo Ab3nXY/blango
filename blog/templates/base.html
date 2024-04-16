@@ -56,7 +56,77 @@
             background-color: #0056b3; /* Bootstrap primary hover color for buttons */
         }
 
-        /* Add more styles based on your preference */
+        /* Override Crispy Forms CSS for dark theme */
+        /* Example styles - adjust according to your dark theme */
+
+        /* Form container */
+        .form-container {
+            background-color: #333; /* Dark background color */
+            color: #fff; /* Light text color */
+        }
+
+        /* Form fields */
+        .form-control {
+            background-color: #555; /* Dark input background color */
+            color: #fff; /* Light text color */
+            border-color: #777; /* Dark border color */
+        }
+
+        /* Form fields when focused */
+        .form-control:focus {
+            background-color: #666; /* Darker background color when focused */
+            color: #fff; /* Light text color */
+            border-color: #888; /* Darker border color when focused */
+        }
+
+        /* Form labels */
+        .control-label {
+            color: #ccc; /* Light label text color */
+        }
+
+        /* Override autofill styles for password input field */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 30px #555 inset !important; /* Dark input background color */
+            -webkit-text-fill-color: #fff !important; /* Light text color */
+        }
+
+        
+        /* Dropdowns */
+        select.form-select {
+            background-color: #555; /* Dark dropdown background color */
+            color: #fff; /* Light text color */
+            border-color: #777; /* Dark border color */
+        }
+
+        /* Selected options */
+        select.form-select option {
+            background-color: #555; /* Dark dropdown background color */
+            color: #fff; /* Light text color */
+        }
+
+        /* Selectable elements like tags */
+        .select2-container--default .select2-selection--multiple {
+            background-color: #555; /* Dark background color for selectable elements */
+            color: #fff; /* Light text color */
+            border-color: #777; /* Dark border color */
+        }
+
+        .post-content {
+            line-height: 1.6; /* Increase line height for better readability */
+        }
+
+        .post-content p {
+            text-indent: 1.5em; /* Add indentation to paragraphs */
+            margin-bottom: 15px; /* Add spacing between paragraphs */
+        }
+
+
+
+        /* Add any additional styles as needed */
+
+
     </style>
 
     <title>{% block title %}Blog{% endblock %}</title>
@@ -70,9 +140,9 @@
                 <a class="nav-link" href="{% url 'create_blog' %}">Create Blog</a>
                     <a class="nav-link" href="/post-table">Blog Table</a>
                     <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-                    <form class="nav-item" method="post" action="{% url 'logout' %}">
+                    <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="nav-link btn btn-link" type="submit">Logout</button>
+                        <button class="nav-link" type="submit" style="background: none; border: none;">Logout</button>
                     </form>
                 {% else %}
                     <a class="nav-link" href="{% url 'django_registration_register' %}">Register</a>

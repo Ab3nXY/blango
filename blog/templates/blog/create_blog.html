@@ -40,6 +40,13 @@
             $("#id_published_at").datepicker('setDate', new Date());
           });
       });
+
+    function set_slug(title) {
+        // Replace spaces with underscores and convert to lowercase
+        var slug = title.toLowerCase().replace(/\s+/g, '_');
+        // Set the value of the slug field
+        document.getElementById('id_slug').value = slug;
+    }
     </script>
 
     <button type="submit" class="btn btn-primary mt-3">Submit</button>
