@@ -11,27 +11,29 @@
       </div>
     </div>
 
-    {% if post.hero_image %}
-      <div class="mb-4">
-        <img src="{{ post.hero_image.url }}" class="img-fluid rounded" alt="{{ post.title }}">
-      </div>
-    {% endif %}
-
     <div class="row">
-      <div class="col">
-        <div class="post-content">
-          {{ post.content|safe }}
+      {% if post.hero_image %}
+        <div class="col-lg-10 pt-4 pt-lg-0">
+          <img src="{{ post.hero_image.url }}" class="col-lg-6 float-start imgshadow " style="margin: 0 30px;">
+            <div class="post-content">
+              <p style="text-indent: 1em;">{{ post.content|linebreaksbr|safe }}</p>
+            </div>
         </div>
+      {% endif %}
+      <div style="text-align: left;" class="col-lg-5">
       </div>
     </div>
     
+    
+    
     <br>
-  {% if request.user == post.author %}
-  <form method="post" action="{% url 'delete_blog' post.slug %}" onsubmit="return confirm('Are you sure you want to delete this post?');">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Delete Blog</button>
-  </form>
-  {% endif %}
+    {% if request.user == post.author %}
+    <form method="post" action="{% url 'delete_blog' post.slug %}" onsubmit="return confirm('Are you sure you want to delete this post?');">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Delete Blog</button>
+    </form>
+    {% endif %}
+
     <div class="row mt-5">
       <div class="col">
         {% recent_posts post %}

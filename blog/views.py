@@ -58,7 +58,7 @@ def delete_blog(request, slug):
 
 def post_table(request):
     return render(
-        request, "blog/post-detail.html", {"post_list_url": reverse("post-list")}
+        request, "blog/post-table.html", {"post_list_url": reverse("post-list")}
     )
 
 @login_required
