@@ -12,6 +12,11 @@ class PostRow extends React.Component {
 
     return <tr>
       <td style={{ color: 'white' }}>{post.title}</td>
+      <td style={{ color: 'white' }}>
+        {thumbnail}
+      </td>
+      <td style={{ color: 'white' }}>{post.tags.join(', ')}</td>
+      <td style={{ color: 'white' }}>{post.slug}</td>
       <td style={{ color: 'white' }}>{post.summary}</td>
       <td><a href={'/post/' + post.slug + '/'} className="btn btn-primary">View</a></td> 
     </tr>
@@ -65,10 +70,13 @@ class PostTable extends React.Component {
       </tr>
     }
 
-    return <table className="table table-bordered ">
+    return <table className="table table-striped table-bordered mt-2">
       <thead>
-      <tr className="text-center" style={{ color: 'lightblue' }}>
+      <tr style={{ color: 'lightgreen' }}>
         <th>Title</th>
+        <th>Image</th>
+        <th>Tags</th>
+        <th>Slug</th>
         <th>Summary</th>
         <th>Link</th>
       </tr>

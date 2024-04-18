@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
 from versatileimagefield.fields import VersatileImageField, PPOIField
+from ckeditor.fields import RichTextField
 
 
 class Comment(models.Model):
@@ -29,11 +30,11 @@ class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    published_at = models.DateTimeField(blank=True, null=True, db_index=True)
+    published_at = models.DateTimeField(blank=True, null=True, db_index=True,auto_now_add=True)
     title = models.TextField(max_length=100)
     slug = models.SlugField(unique=True)
     summary = models.TextField(max_length=500)
-    content = models.TextField()
+    content = RichTextField()
     tags = models.ManyToManyField(Tag, related_name="posts")
     comments = GenericRelation(Comment)
     hero_image = VersatileImageField(

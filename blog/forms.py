@@ -2,6 +2,7 @@ from django import forms
 from crispy_forms.layout import Submit
 from crispy_forms.helper import FormHelper
 from blog.models import Comment, Post
+from ckeditor.widgets import CKEditorWidget
 
 
 class CommentForm(forms.ModelForm):
@@ -20,6 +21,11 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
+        widgets = {
+            'content': CKEditorWidget(
+                attrs={'class': 'form-control dark-theme', 'style': 'width: 100%; '}  # Added height: auto
+            )
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

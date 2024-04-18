@@ -60,6 +60,7 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
+        'ckeditor',
         'blango_auth',
         'django_filters',
         'versatileimagefield',
@@ -255,6 +256,21 @@ class Dev(Configuration):
         "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
         "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     }
+
+    CKEDITOR_CONFIGS = {
+        'default': {
+            'toolbar': 'Custom',  # Enable a custom toolbar configuration
+            'toolbar_Custom': [
+                ['Bold', 'Italic', 'Underline'],  # Add desired editing options
+                ['NumberedList', 'BulletedList'],  # Add bullet point and numbering options
+                ['Indent', 'Outdent'],  # Add indentation options
+                ['Link', 'Unlink'],  # Add hyperlink options
+                ['RemoveFormat'],  # Add option to remove formatting
+                ['Source']  # Add option to view source code
+            ],
+        },
+    }
+
 
 
 class Prod(Dev):

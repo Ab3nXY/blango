@@ -12,19 +12,13 @@
     </div>
 
     <div class="row">
-      {% if post.hero_image %}
         <div class="col-lg-10 pt-4 pt-lg-0">
-          <img src="{{ post.hero_image.url }}" class="col-lg-6 float-start imgshadow " style="margin: 0 30px;">
-            <div class="post-content">
-              <p style="text-indent: 1em;">{{ post.content|linebreaksbr|safe }}</p>
-            </div>
+          <div class="post-content">
+            <p>{{ post.content|safe }}</p>
+          </div>
         </div>
-      {% endif %}
-      <div style="text-align: left;" class="col-lg-5">
-      </div>
+      <div style="text-align: left;" class="col-lg-5"></div>
     </div>
-    
-    
     
     <br>
     {% if request.user == post.author %}
