@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 {% load blog_extras %}
-{% block title %}Blango Profile{% endblock %}
-{% block content %}
-{% row %}
-    {% col %}
-        <p>Logged in as {{ request.user }}.</p>
-        <p><a href="{% url 'logout' %}">Log Out</a></p>
-    {% endcol %}
-{% endrow %}
+
+{% block title %}Update Profile{% endblock %}  {% block content %}
+
+<div class="container">
+  <div class="row justify-content-center">
+        <div class="col-md-4">
+        <form method="post">
+        {% csrf_token %}
+        <div class="form-group py-2">
+          <label for="first_name">First Name:</label>
+          <input type="text" class="form-control" id="first_name" name="first_name" value="{{ request.user.first_name }}">
+        </div>
+
+        <div class="form-group py-2">
+          <label for="last_name">Last Name:</label>
+          <input type="text" class="form-control" id="last_name" name="last_name" value="{{ request.user.last_name }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary py-2 mt-2">Update Profile</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}

@@ -3,8 +3,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
-from versatileimagefield.fields import VersatileImageField, PPOIField
-from ckeditor.fields import RichTextField
+from versatileimagefield.fields import VersatileImageField
 
 
 class Comment(models.Model):
@@ -34,13 +33,12 @@ class Post(models.Model):
     title = models.TextField(max_length=100)
     slug = models.SlugField(unique=True)
     summary = models.TextField(max_length=500)
-    content = RichTextField()
+    content = models.TextField(max_length=5000)
     tags = models.ManyToManyField(Tag, related_name="posts")
     comments = GenericRelation(Comment)
     hero_image = VersatileImageField(
-        upload_to="hero_images", ppoi_field="ppoi", null=True, blank=True
+        upload_to="hero_images",null=True, blank=True
     )
-    ppoi = PPOIField(null=True, blank=True)
 
     def __str__(self):
         return self.title

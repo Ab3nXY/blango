@@ -1,29 +1,31 @@
 {% load blog_extras crispy_forms_tags %}
 {% load blog_extras %}
-<h4>Comments</h4>
-{% for comment in post.comments.all %}
-{% row "border-top pt-2" %}
-    {% col %}
-        <h5>Posted by {{ comment.creator.first_name }} at {{ comment.created_at|date:"M, d Y h:i" }}</h5>
-    {% endcol %}
-{% endrow %}
-{% row "border-bottom" %}
-    {% col %}
-        <p>{{ comment.content }}</p>
-    {% endcol %}
-{% endrow %}
-{% empty %}
-    {% row "border-top border-bottom" %}
-        {% col %}
-            <p>No comments.</p>
-        {% endcol %}
-    {% endrow %}
-{% endfor %}
-{% if request.user.is_active %}
-{% row "mt-4" %}
-    {% col %}
-        <h4>Add Comment</h4>
-         {%  crispy comment_form %}
-    {% endcol %}
-{% endrow %}
-{% endif %}
+<div class="comments-section mt-5">
+    <h4 class="mb-2">Comments</h4>
+    {% for comment in post.comments.all %}
+        <div class="comment pt-3">
+            <div class="comment-header d-flex justify-content-between align-items-center">
+                <p class="mb-0 text-muted">{{ comment.creator.first_name }} says:</p>
+                <p class="mb-0 text-muted">{{ comment.created_at|date:"M, d Y h:i A" }}</p>
+            </div>
+            <div class="comment-body mt-2">
+                <p class="mb-0">{{ comment.content }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <div class="no-comments py-3">
+            <p class="mb-0">No comments.</p>
+        </div>
+    {% endfor %}
+
+    {% if request.user.is_active %}
+        <div class="row border-top mt-4">
+            <div class="add-comment  mt-2">
+            <h4 class="mb-3">Add Comment</h4>
+                <div class="col-md-6">
+                    {% crispy comment_form %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

@@ -37,9 +37,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ["ppoi"]
         readonly = ["modified_at", "created_at"]
-        
+
 class TagField(serializers.SlugRelatedField):
     def to_internal_value(self, data):
         try:

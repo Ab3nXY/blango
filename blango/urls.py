@@ -28,7 +28,7 @@ urlpatterns = [
     path("api/v1/", include("blog.api.urls")),
     path("post-table/", blog.views.post_table, name="blog-post-table"),
     path("create_blog/", blog.views.create_blog, name="create_blog"),
-    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
+    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 
 
@@ -37,4 +37,4 @@ urlpatterns = [
 
 # Serve static and media files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

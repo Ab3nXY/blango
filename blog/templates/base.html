@@ -95,7 +95,7 @@
             -webkit-text-fill-color: #fff !important; /* Light text color */
         }
 
-        
+
         /* Dropdowns */
         select.form-select {
             background-color: #555; /* Dark dropdown background color */
@@ -117,14 +117,32 @@
         }
 
         .post-content {
-            line-height: 1.6; /* Increase line height for better readability */
+            font-size: 1.1em; /* Increase line height for better readability */
+            margin-bottom: 15px;
         }
 
-        .post-content p {
-            text-indent: 1.5em; /* Add indentation to paragraphs */
-            margin-bottom: 15px; /* Add spacing between paragraphs */
+        .hero-image {
+          float: left;
+          margin-top: 20px;
+          margin-right: 20px;
+          max-width: 500px;
+          height: auto;
         }
 
+        /* Media query for mobile view */
+        @media (max-width: 768px) {
+          .hero-image {
+            float: none;
+            display: block;
+            margin: 0 auto 20px;
+            width: 100%;
+            max-width: none;
+          }
+
+          .post-content {
+            font-size: 1.2em;
+          }
+        }
 
 
         /* Add any additional styles as needed */
@@ -140,8 +158,7 @@
             <a class="navbar-brand" href="/">Home</a>
             <div class="d-flex">
                 {% if request.user.is_active %}
-                <a class="nav-link" href="{% url 'create_blog' %}">Create Blog</a>
-                    <a class="nav-link" href="/post-table">Blog Table</a>
+                <a class="nav-link" href="{% url 'create_blog' %}">New Blog</a>
                     <a class="nav-link" href="{% url 'profile' %}">Profile</a>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}

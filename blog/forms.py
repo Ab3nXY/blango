@@ -2,7 +2,6 @@ from django import forms
 from crispy_forms.layout import Submit
 from crispy_forms.helper import FormHelper
 from blog.models import Comment, Post
-from ckeditor.widgets import CKEditorWidget
 
 
 class CommentForm(forms.ModelForm):
@@ -13,7 +12,7 @@ class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
         # Adjust textarea size for content field
-        self.fields['content'].widget.attrs['rows'] = 2 
+        self.fields['content'].widget.attrs['rows'] = 2
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
 
@@ -21,11 +20,6 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        widgets = {
-            'content': CKEditorWidget(
-                attrs={'class': 'form-control dark-theme', 'style': 'width: 100%; '}  # Added height: auto
-            )
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

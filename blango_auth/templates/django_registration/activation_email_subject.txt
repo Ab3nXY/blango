@@ -1,1 +1,1 @@
-Activate your Blango account! You have {{ expiration_days }} days!
+Activate your Blog account! You have {{ expiration_days }} days!

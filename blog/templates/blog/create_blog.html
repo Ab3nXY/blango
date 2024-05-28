@@ -4,28 +4,24 @@
 {% block content %}
 <div class="container mt-12">
   <h2>New Blog</h2>
-  <form method="post" enctype="multipart/form-data" class="mt-4">
-    {% csrf_token %}
-    {{ form|crispy }}
+  <div class="row justify-content-center">  <div class="col-md-8">  <form method="post" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+        {{ form|crispy }}
 
-    <!-- Include jQuery and jQuery UI for datepicker -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-  
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-    <script>
-    function set_slug(title) {
-        // Replace spaces with underscores and convert to lowercase
-        var slug = title.toLowerCase().replace(/\s+/g, '_');
-        // Set the value of the slug field
-        document.getElementById('id_slug').value = slug;
-    }
-    document.addEventListener("DOMContentLoaded", function() {
-        // Initialize CKEditor
-        CKEDITOR.replace('id_content');
-    });
-    </script>
-    <button type="submit" class="btn btn-primary mt-3">Publish</button>
-  </form>
+        <script>
+          function set_slug(title) {
+            // Replace spaces with underscores and convert to lowercase
+            var slug = title.toLowerCase().replace(/\s+/g, '_');
+            // Set the value of the slug field
+            document.getElementById('id_slug').value = slug;
+          }
+        </script>
+        <button type="submit" class="btn btn-primary mt-3">Publish</button>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}

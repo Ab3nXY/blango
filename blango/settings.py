@@ -14,10 +14,6 @@ from pathlib import Path
 from configurations import Configuration
 from configurations import values
 from datetime import timedelta
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
 
 
 class Dev(Configuration):
@@ -30,15 +26,24 @@ class Dev(Configuration):
     # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = os.getenv('SECRET_KEY', 'your_default_secret_key')
+    SECRET_KEY = 'wo*zx8281bv3fa7@6gh=tm*vma(-9d)u0vo2$(rtb5ebg47$5'
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
 
-    ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", ".codio.io", "127.0.0.1"])
+
+    # email service
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP server
+    EMAIL_PORT = 587  # Replace with your SMTP server port
+    EMAIL_USE_TLS = True  # Set to True if your SMTP server requires TLS
+    EMAIL_HOST_USER = 'abenxy0@gmail.com'
+    EMAIL_HOST_PASSWORD = 'jfme kwhw vikp wezz'
+
+    ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", "ab3nxy.pythonanywhere.com", "127.0.0.1"])
     X_FRAME_OPTIONS = 'SAMEORIGIN'
     CSRF_COOKIE_SAMESITE = None
-    CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
+    CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', "https://ab3nxy.pythonanywhere.com"]
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SAMESITE = 'None'
@@ -47,7 +52,6 @@ class Dev(Configuration):
     CRISPY_TEMPLATE_PACK = "bootstrap5"
     INTERNAL_IPS = ["192.168.11.179"]
     AUTH_USER_MODEL = "blango_auth.User"
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     ACCOUNT_ACTIVATION_DAYS = 7
     SITE_ID = 1
     ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -60,7 +64,6 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
-        'ckeditor',
         'blango_auth',
         'django_filters',
         'versatileimagefield',
@@ -82,7 +85,7 @@ class Dev(Configuration):
         "allauth.account",
         "allauth.socialaccount",
         "allauth.socialaccount.providers.google"
-        
+
 
     ]
 
@@ -129,7 +132,11 @@ class Dev(Configuration):
         }
     }
 
-
+    SOCIALACCOUNT_PROVIDERS = {
+        'google': {
+            'FETCH_USERINFO' : True
+        }
+    }
 
 
     # Password validation
@@ -257,23 +264,19 @@ class Dev(Configuration):
         "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     }
 
-    CKEDITOR_CONFIGS = {
-        'default': {
-            'toolbar': 'Custom',  # Enable a custom toolbar configuration
-            'toolbar_Custom': [
-                ['Bold', 'Italic', 'Underline'],  # Add desired editing options
-                ['NumberedList', 'BulletedList'],  # Add bullet point and numbering options
-                ['Indent', 'Outdent'],  # Add indentation options
-                ['Link', 'Unlink'],  # Add hyperlink options
-                ['RemoveFormat'],  # Add option to remove formatting
-                ['Source']  # Add option to view source code
-            ],
-        },
-    }
-
 
 
 class Prod(Dev):
-    DEBUG = False
-    SECRET_KEY = values.SecretValue()
+    DEBUG = True
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'Ab3nXY$blango_db_mysql',
+            'USER': 'Ab3nXY',
+            'PASSWORD': 'a0111246494',
+            'HOST': 'Ab3nXY.mysql.pythonanywhere-services.com',
+            'PORT': '3306',
+        }
+    }
 
