@@ -1,7 +1,7 @@
 from django.urls import path, include, re_path
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from blog.api.views import PostViewSet, UserDetail, TagViewSet
+from blog.api.views import PostViewSet, UserDetail, TagViewSet, CommentViewSet
 from rest_framework.authtoken import views
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -13,6 +13,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 router = DefaultRouter()
 router.register("tags", TagViewSet)
 router.register("posts", PostViewSet)
+router.register("comments", CommentViewSet)
 
 
 schema_view = get_schema_view(

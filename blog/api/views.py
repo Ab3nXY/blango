@@ -1,7 +1,7 @@
 from rest_framework import generics, viewsets
 
-from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer, TagSerializer
-from blog.models import Post, Tag
+from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer, TagSerializer, CommentSerializer
+from blog.models import Post, Tag, Comment
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
 from blango_auth.models import User
 from rest_framework.decorators import action
@@ -130,4 +130,29 @@ class TagViewSet(viewsets.ModelViewSet):
     def retrieve(self, *args, **kwargs):
         return super(TagViewSet, self).retrieve(*args, **kwargs)
 
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
+    @action(methods=["get"], detail=True, name="Comments")
+    def posts(self, request, pk=None):
+        tag = self.get_object()
+        page = self.paginate_queryset(tag.posts)
+        if page is not None:
+            post_serializer = PostSerializer(
+                page, many=True, context={"request": request}
+            )
+            return self.get_paginated_response(post_serializer.data)
+        post_serializer = PostSerializer(
+            Comment.posts, many=True, context={"request": request}
+        )
+        return Response(post_serializer.data)
+
+
+    @method_decorator(cache_page(300))
+    def list(self, *args, **kwargs):
+        return super(CommentViewSet, self).list(*args, **kwargs)
+
+    @method_decorator(cache_page(300))
+    def retrieve(self, *args, **kwargs):
+        return super(CommentViewSet, self).retrieve(*args, **kwargs)
