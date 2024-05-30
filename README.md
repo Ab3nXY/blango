@@ -1,7 +1,4 @@
-# Blango: A Blog Writing App with REST API
-
-Blango is a web-based blog writing app with a REST API developed as part of the Coursera courses "Advanced Django: Advanced Django Rest Framework" and "Advanced Django Introduction to Django Rest Framework". It provides users with a feature-rich platform for creating, managing, and sharing blog posts.
-
+# Blango: A Blog Writing App with REST API and IBM watson for sentimental analysis
 ## Features
 
 - **Post creation:** Users can create new blog posts with titles, content, categories, and images.
@@ -32,28 +29,21 @@ Blango incorporates several Django REST Framework features, showcasing advanced 
 - **Routers:** Automatic URL generation for REST API endpoints is achieved through the use of routers.
 - **Authentication and authorization:** Blango leverages JWTs and the Django REST Framework's permissions system for robust user authentication and authorization.
 
-## Getting Started
-
-### Prerequisites
-
-- Python 3.x
-- Django
-- Django REST Framework
 
 ### Installation
 
 1. Clone the repository:
-   git clone https://github.com/ab3nxy/blango.git
+   '''git clone https://github.com/ab3nxy/blango.git'''
    
 2. Navigate to the project directory:
-   cd blango
+   '''cd blango'''
 
 3. Install dependencies:
-   pip install -r requirements.txt
+   '''pip install -r requirements.txt'''
 
 4. Migrate the database:
-   python manage.py migrate
+   '''python manage.py migrate'''
 
 5. Run the development server:
-   python manage.py runserver
+   '''python manage.py runserver'''
 

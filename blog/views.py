@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 def index(request):
     posts = Post.objects.filter(published_at__lte=timezone.now()).select_related("author")
-    logger.debug("Got %d posts", len(posts))
     return render(request, "blog/index.html", {"posts": posts})
     
 
@@ -37,15 +36,11 @@ def post_detail(request, slug):
             try:
                 comment.sentiment = classify_comment(comment.content)
             except Exception as e:
-                logger.error("Error classifying comment sentiment: %s", e)
                 if request.is_ajax():
                     return JsonResponse({'error': 'Failed to analyze comment sentiment. Please try again.'}, status=500)
                 messages.error(request, "Failed to analyze comment sentiment. Please try again.")
             comment.save()
-            logger.info(
-                "Created comment on Post %d for user %s with sentiment %s",
-                post.pk, request.user, comment.sentiment
-            )
+
             if request.is_ajax():
                 return JsonResponse({
                     'creator': comment.creator.first_name,
@@ -70,7 +65,6 @@ def add_comment(request, post_id):
         try:
             comment.sentiment = classify_comment(comment.content)
         except Exception as e:
-            logger.error("Error classifying comment sentiment: %s", e)
             return JsonResponse({'error': 'Failed to analyze comment sentiment. Please try again.'}, status=500)
         comment.save()
         
@@ -166,12 +160,10 @@ def classify_comment(comment):
         A dictionary containing the classification results, or None if an error occurs.
     """
     try:
-        logger.debug(f"Classifying comment: {comment}")
         response = natural_language_understanding.analyze(
             text=comment,
             features=Features(sentiment=SentimentOptions())
         ).get_result()
-        logger.debug(f"Watson NLU response: {response}")
 
         if 'sentiment' in response:
             sentiment = response['sentiment']['document']['score']
