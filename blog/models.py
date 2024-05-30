@@ -14,6 +14,7 @@ class Comment(models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     modified_at = models.DateTimeField(auto_now=True)
+    sentiment = models.CharField(max_length=10, null=True, blank=True)
 
 
 

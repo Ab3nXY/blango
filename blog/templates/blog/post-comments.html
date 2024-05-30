@@ -1,31 +1,125 @@
 {% load blog_extras crispy_forms_tags %}
-{% load blog_extras %}
-<div class="comments-section mt-5">
+<div class="comments-section mt-5" id="comments-section">
     <h4 class="mb-2">Comments</h4>
-    {% for comment in post.comments.all %}
-        <div class="comment pt-3">
-            <div class="comment-header d-flex justify-content-between align-items-center">
-                <p class="mb-0 text-muted">{{ comment.creator.first_name }} says:</p>
-                <p class="mb-0 text-muted">{{ comment.created_at|date:"M, d Y h:i A" }}</p>
+    <div id="comments-list">
+        {% for comment in comments %}
+            <div class="comment mt-2">
+                <div class="comment-header d-flex justify-content-between align-items-center">
+                    <p class="mb-0 text-muted">{{ comment.creator.first_name }} says:</p> 
+                    <p class="mb-0 text-muted">{{ comment.created_at|date:"M, d Y h:i A" }}</p>               
+                </div>
+                <div class="comment-body d-flex justify-content-between align-items-center">
+                    <p class="mb-0">
+                        {% if comment.sentiment == "positive" %}
+                            <i class="fa fa-smile" style="color: green;"></i>
+                        {% elif comment.sentiment == "negative" %}
+                            <i class="fa fa-frown" style="color: red;"></i>
+                        {% else %}
+                            <i class="fa fa-meh" style="color: gray;"></i>
+                        {% endif %}
+                        {{ comment.content }}
+                    </p>
+                    {% if comment.creator == request.user %}
+                        <form class="delete-comment-form" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+                            <button type="button" class="delete-comment-btn" style="background: none; color: red; border: none;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
             </div>
-            <div class="comment-body mt-2">
-                <p class="mb-0">{{ comment.content }}</p>
+        {% empty %}
+            <div class="no-comments py-3">
+                <p class="mb-0">No comments.</p>
             </div>
-        </div>
-    {% empty %}
-        <div class="no-comments py-3">
-            <p class="mb-0">No comments.</p>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 
     {% if request.user.is_active %}
         <div class="row border-top mt-4">
-            <div class="add-comment  mt-2">
-            <h4 class="mb-3">Add Comment</h4>
+            <div class="add-comment mt-2">
+                <h4 class="mb-3">Add Comment</h4>
                 <div class="col-md-6">
-                    {% crispy comment_form %}
+                    <form id="comment-form" method="post" action="{% url 'add_comment' post.pk %}">
+                        {% csrf_token %}
+                        {% crispy comment_form %}
+                    </form>
                 </div>
             </div>
         </div>
     {% endif %}
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+<script>
+// JavaScript for adding a comment
+$('#comment-form').on('submit', function(event) {
+    event.preventDefault();
+    var $form = $(this);
+    $.ajax({
+        type: $form.attr('method'),
+        url: $form.attr('action'),
+        data: $form.serialize(),
+        success: function(response) {
+            // Clear form fields
+            $form[0].reset();
+            // Append new comment to comments list
+            $('#comments-list').prepend(`
+            <div class="comment pt-3">
+                            <div class="comment-header d-flex justify-content-between align-items-center">
+                                <p class="mb-0 text-muted">${response.creator} says:</p>
+                                <p class="mb-0 text-muted">${response.created_at}</p>
+                            </div>
+                            <div class="comment-body d-flex justify-content-between align-items-center">
+                                <p class="mb-0">
+                                    ${response.sentiment === 'positive' ? '<i class="fa fa-smile" style="color: green;"></i>' : response.sentiment === 'negative' ? '<i class="fa fa-frown" style="color: red;"></i>' : '<i class="fa fa-meh" style="color: gray;"></i>'}
+                                    ${response.content}
+                                </p>
+                                  <form class="delete-comment-form" method="post">
+                                    <input type="hidden" name="delete_comment_id" value="${response.comment_id}">
+                                    <button type="button" class="delete-comment-btn" style="background: none; color: red; border: none;">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+            `);
+        },
+        error: function(response) {
+            // Handle form errors
+            var errors = response.responseJSON.errors;
+            alert('There was an error submitting your comment: ' + JSON.stringify(errors));
+        }
+    });
+});
+
+$(document).ready(function() {
+        // Handle click on delete button
+        $('.delete-comment-btn').on('click', function() {
+            var $form = $(this).closest('form');
+            var commentId = $form.find('input[name="delete_comment_id"]').val();
+
+            $.ajax({
+                url: '/comment/' + commentId + '/delete/',
+                method: 'POST',
+                data: {
+                    'delete_comment_id': commentId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Remove deleted comment from DOM
+                    $form.closest('.comment').remove();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error deleting comment:', error);
+                }
+            });
+        });
+    });
+
+</script>
+
