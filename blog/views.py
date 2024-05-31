@@ -22,7 +22,6 @@ def index(request):
     return render(request, "blog/index.html", {"posts": posts})
     
 
-@login_required
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
     comments = post.comments.all().order_by('-created_at')  # Order comments by creation date descending
@@ -35,11 +34,16 @@ def post_detail(request, slug):
             comment.creator = request.user
             try:
                 comment.sentiment = classify_comment(comment.content)
+                print('sentiment', comment.sentiment)
             except Exception as e:
                 if request.is_ajax():
                     return JsonResponse({'error': 'Failed to analyze comment sentiment. Please try again.'}, status=500)
                 messages.error(request, "Failed to analyze comment sentiment. Please try again.")
             comment.save()
+
+            # Recalculate and save the post rating
+            post.rating = calculate_rating(post.comments.all())
+            post.save()
 
             if request.is_ajax():
                 return JsonResponse({
@@ -47,6 +51,7 @@ def post_detail(request, slug):
                     'created_at': comment.created_at.strftime("%b, %d %Y %I:%M %p"),
                     'content': comment.content,
                     'sentiment': comment.sentiment,
+                    'rating': post.rating
                 })
             return redirect(request.path_info)
 
@@ -59,35 +64,52 @@ def add_comment(request, post_id):
     form = CommentForm(request.POST)
     
     if form.is_valid():
-        comment = form.save(commit=False)
-        comment.content_object = post
-        comment.creator = request.user
-        try:
-            comment.sentiment = classify_comment(comment.content)
-        except Exception as e:
-            return JsonResponse({'error': 'Failed to analyze comment sentiment. Please try again.'}, status=500)
-        comment.save()
+        with transaction.atomic():
+            comment = form.save(commit=False)
+            comment.content_object = post
+            comment.creator = request.user
+            try:
+                comment.sentiment = classify_comment(comment.content)
+                print('sentiment', comment.sentiment)
+            except Exception as e:
+                return JsonResponse({'error': 'Failed to analyze comment sentiment. Please try again.'}, status=500)
+            comment.save()
+
+            # Recalculate and save the post rating
+            post.rating = calculate_rating(post.comments.all())
+            print('rating', post.rating)
+            post.save()
         
-        # Return newly added comment details via AJAX response
-        return JsonResponse({
-            'creator': comment.creator.first_name,
-            'created_at': comment.created_at.strftime("%b, %d %Y %I:%M %p"),
-            'content': comment.content,
-            'sentiment': comment.sentiment,
-        })
+            # Return newly added comment details via AJAX response
+            return JsonResponse({
+                'creator': comment.creator.first_name,
+                'created_at': comment.created_at.strftime("%b, %d %Y %I:%M %p"),
+                'content': comment.content,
+                'sentiment': comment.sentiment,
+                'comment_id': comment.id,
+                'rating': post.rating  
+            })
     else:
         return JsonResponse({'errors': form.errors}, status=400)
-    
 
 @require_POST
 @login_required
 def delete_comment(request, comment_id):
-    try:
-        comment_to_delete = get_object_or_404(Comment, id=comment_id, creator=request.user)
-        comment_to_delete.delete()
-        return JsonResponse({'success': 'Comment deleted successfully.'})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+    comment = get_object_or_404(Comment, id=comment_id)
+    post = comment.content_object  # Assuming the content_object is the Post
+
+    if request.user != comment.creator:
+        return JsonResponse({'error': 'You do not have permission to delete this comment.'}, status=403)
+
+    with transaction.atomic():
+        comment.delete()
+
+        # Recalculate and save the post rating
+        post.rating = calculate_rating(post.comments.all())
+        print('rating', post.rating)
+        post.save()
+
+        return JsonResponse({'success': True, 'rating': post.rating})
 
 @login_required
 def delete_blog(request, slug):
@@ -180,3 +202,27 @@ def classify_comment(comment):
         logger.error(f"Error classifying comment: {e}")
         return None
 
+def calculate_rating(comments):
+    positive_count = sum(1 for comment in comments if comment.sentiment == 'positive')
+    neutral_count = sum(1 for comment in comments if comment.sentiment == 'neutral')
+    negative_count = sum(1 for comment in comments if comment.sentiment == 'negative')
+
+    total_score = (positive_count * 1) + (neutral_count * 0) + (negative_count * -1)
+    total_labels = positive_count + neutral_count + negative_count
+
+    if total_labels == 0:
+        return 0.0  # Default to neutral if no labels are provided
+
+    average_score = total_score / total_labels
+
+    # Normalize the average score to a 5-point scale
+    rating = (average_score + 1) * 2 + 1
+
+    # Round to the nearest 0.5
+    rating = round(rating * 2) / 2
+    return rating
+
+def fetch_post_rating(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    rating = post.rating  # Replace with how you retrieve the rating for the post
+    return JsonResponse({'rating': rating})

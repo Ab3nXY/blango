@@ -1,6 +1,9 @@
 {% load blog_extras crispy_forms_tags %}
 <div class="comments-section mt-5" id="comments-section">
-    <h4 class="mb-2">Comments</h4>
+    <h4 class="mb-2">Comments <span id="comments-count" class="text-muted small">({{ comments|length }})</span></h4>
+    {% if post.comments.count > 0 %}
+        <h4 class="mb-4"><span id="post-rating"></span></h4>
+    {% endif %}
     <div id="comments-list">
         {% for comment in comments %}
             <div class="comment mt-2">
@@ -32,7 +35,7 @@
             </div>
         {% empty %}
             <div class="no-comments py-3">
-                <p class="mb-0">No comments.</p>
+                <p class="mb-0"></p>
             </div>
         {% endfor %}
     </div>
@@ -56,6 +59,41 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 <script>
+$(document).ready(function() {
+    // Fetch the initial rating from the backend using an AJAX request
+    $.ajax({
+        url: '/post-detail/{{ post.slug }}/fetch-rating/',  // Adjust this URL as per your pattern
+        method: 'GET',
+        success: function(response) {
+            var initialRating = response.rating;
+            if (initialRating > 0) {
+                updateStarRating(initialRating);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching initial rating:', error);
+        }
+    });
+});
+
+// Function to update star rating display
+function updateStarRating(rating) {
+    var starHTML = '';
+    for (var i = 0; i < 5; i++) {
+        if (rating >= i + 1) {
+            starHTML += '<i class="fa fa-star" style="color: gold;"></i>';
+        } else if (rating >= i + 0.5) {
+            starHTML += '<i class="fa fa-star-half-alt" style="color: gold;"></i>';
+        } else {
+            starHTML += '<i class="fa fa-star-o" style="color: gold;"></i>';
+        }
+    }
+    starHTML += ' ' + rating.toFixed(1); 
+    $('#post-rating').html(starHTML);
+}
+
+
+
 // JavaScript for adding a comment
 $('#comment-form').on('submit', function(event) {
     event.preventDefault();
@@ -68,26 +106,29 @@ $('#comment-form').on('submit', function(event) {
             // Clear form fields
             $form[0].reset();
             // Append new comment to comments list
-            $('#comments-list').prepend(`
-            <div class="comment pt-3">
-                            <div class="comment-header d-flex justify-content-between align-items-center">
-                                <p class="mb-0 text-muted">${response.creator} says:</p>
-                                <p class="mb-0 text-muted">${response.created_at}</p>
-                            </div>
-                            <div class="comment-body d-flex justify-content-between align-items-center">
-                                <p class="mb-0">
-                                    ${response.sentiment === 'positive' ? '<i class="fa fa-smile" style="color: green;"></i>' : response.sentiment === 'negative' ? '<i class="fa fa-frown" style="color: red;"></i>' : '<i class="fa fa-meh" style="color: gray;"></i>'}
-                                    ${response.content}
-                                </p>
-                                  <form class="delete-comment-form" method="post">
-                                    <input type="hidden" name="delete_comment_id" value="${response.comment_id}">
-                                    <button type="button" class="delete-comment-btn" style="background: none; color: red; border: none;">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-            `);
+            var newComment = `
+            <div class="comment mt-2" id="comment-${response.comment_id}">
+                <div class="comment-header d-flex justify-content-between align-items-center">
+                    <p class="mb-0 text-muted">${response.creator} says:</p>
+                    <p class="mb-0 text-muted">${response.created_at}</p>
+                </div>
+                <div class="comment-body d-flex justify-content-between align-items-center">
+                    <p class="mb-0">
+                        ${response.sentiment === 'positive' ? '<i class="fa fa-smile" style="color: green;"></i>' : response.sentiment === 'negative' ? '<i class="fa fa-frown" style="color: red;"></i>' : '<i class="fa fa-meh" style="color: gray;"></i>'}
+                        ${response.content}
+                    </p>
+                    <form class="delete-comment-form" method="post">
+                        <input type="hidden" name="delete_comment_id" value="${response.comment_id}">
+                        <button type="button" class="delete-comment-btn" style="background: none; color: red; border: none;">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            `;
+            $('#comments-list').prepend(newComment);
+            // Update the rating display
+            updateStarRating(response.rating);
         },
         error: function(response) {
             // Handle form errors
@@ -97,29 +138,27 @@ $('#comment-form').on('submit', function(event) {
     });
 });
 
-$(document).ready(function() {
-        // Handle click on delete button
-        $('.delete-comment-btn').on('click', function() {
-            var $form = $(this).closest('form');
-            var commentId = $form.find('input[name="delete_comment_id"]').val();
+// JavaScript for deleting a comment
+$(document).on('click', '.delete-comment-btn', function() {
+    var $form = $(this).closest('form');
+    var commentId = $form.find('input[name="delete_comment_id"]').val();
 
-            $.ajax({
-                url: '/comment/' + commentId + '/delete/',
-                method: 'POST',
-                data: {
-                    'delete_comment_id': commentId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function(response) {
-                    // Remove deleted comment from DOM
-                    $form.closest('.comment').remove();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error deleting comment:', error);
-                }
-            });
-        });
+    $.ajax({
+        url: '/comment/' + commentId + '/delete/',
+        method: 'POST',
+        data: {
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(response) {
+            // Remove deleted comment from DOM
+            $form.closest('.comment').remove();
+            // Update the rating display
+            updateStarRating(response.rating);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error deleting comment:', error);
+        }
     });
-
+});
 </script>
 

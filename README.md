@@ -33,17 +33,17 @@ Blango incorporates several Django REST Framework features, showcasing advanced 
 ### Installation
 
 1. Clone the repository:
-   '''git clone https://github.com/ab3nxy/blango.git'''
+   ```git clone https://github.com/ab3nxy/blango.git```
    
 2. Navigate to the project directory:
-   '''cd blango'''
+   ```cd blango```
 
 3. Install dependencies:
-   '''pip install -r requirements.txt'''
+   ```pip install -r requirements.txt```
 
 4. Migrate the database:
-   '''python manage.py migrate'''
+   ```python manage.py migrate```
 
 5. Run the development server:
-   '''python manage.py runserver'''
+   ```python manage.py runserver```
 

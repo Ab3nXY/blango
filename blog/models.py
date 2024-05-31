@@ -37,6 +37,7 @@ class Post(models.Model):
     content = models.TextField(max_length=5000)
     tags = models.ManyToManyField(Tag, related_name="posts")
     comments = GenericRelation(Comment)
+    rating = models.FloatField(default=0.0)
     hero_image = VersatileImageField(
         upload_to="hero_images",null=True, blank=True
     )

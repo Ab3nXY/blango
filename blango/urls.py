@@ -15,6 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", blog.views.index, name="index"),
     path("post/<slug>/", blog.views.post_detail, name="blog-post-detail"),
+    path('post-detail/<slug:slug>/fetch-rating/', blog.views.fetch_post_rating, name='fetch_post_rating'),
     path('post/<int:post_id>/add_comment/', blog.views.add_comment, name='add_comment'),
     path('comment/<int:comment_id>/delete/', blog.views.delete_comment, name='delete_comment'),
     path('post/<slug:slug>/delete/', blog.views.delete_blog, name='delete_blog'),
