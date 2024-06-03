@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
     <link rel="stylesheet" href="{% static 'jquery-ui.min.css' %}">
-    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
 
 
     <style>
@@ -116,11 +116,6 @@
             border-color: #777; /* Dark border color */
         }
 
-        .post-content {
-            font-size: 1.1em; /* Increase line height for better readability */
-            margin-bottom: 15px;
-        }
-
         .hero-image {
           float: left;
           margin-top: 20px;
@@ -138,15 +133,7 @@
             width: 100%;
             max-width: none;
           }
-
-          .post-content {
-            font-size: 1.2em;
-          }
         }
-
-
-        /* Add any additional styles as needed */
-
 
     </style>
 

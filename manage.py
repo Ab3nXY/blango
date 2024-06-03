@@ -5,7 +5,7 @@ import sys
 
 if __name__ == "__main__":
     # Set DJANGO_CONFIGURATION environment variable
-    os.environ.setdefault("DJANGO_CONFIGURATION", "Prod")
+    os.environ.setdefault("DJANGO_CONFIGURATION", "Dev")
 
     # Set default Django settings module
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blango.settings")

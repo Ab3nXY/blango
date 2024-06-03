@@ -4,13 +4,14 @@
 {% block content %}
 <div class="container mt-12">
   <h2>New Blog</h2>
-  <div class="row justify-content-center">  <div class="col-md-8">  <form method="post" enctype="multipart/form-data" class="mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method="post" enctype="multipart/form-data" class="mt-4">
         {% csrf_token %}
         {{ form|crispy }}
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
         <script>
           function set_slug(title) {
             // Replace spaces with underscores and convert to lowercase
@@ -18,6 +19,18 @@
             // Set the value of the slug field
             document.getElementById('id_slug').value = slug;
           }
+
+          document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.replace('id_content', {
+              height: 600,
+              width: 732,
+              toolbar: 'Custom',
+              contentsCss: '/static/css/ckeditor_dark_theme.css',
+              bodyClass: 'dark-theme'
+            });
+          });
+
+
         </script>
         <button type="submit" class="btn btn-primary mt-3">Publish</button>
       </form>
@@ -25,3 +38,4 @@
   </div>
 </div>
 {% endblock %}
+

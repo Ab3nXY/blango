@@ -14,7 +14,7 @@
     <div class="row d-flex flex-wrap">
       <div class="col-lg-12">
           <img src="{{ post.hero_image.thumbnail.500x400.url }}" alt="{{ post.title }}" class="hero-image">
-          <p class="post-content">{{ post.content}}</p>
+          <p class="post-content">{{ post.content|safe }}</p>
       </div>
     </div>
 

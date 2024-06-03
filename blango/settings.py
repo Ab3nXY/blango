@@ -60,10 +60,12 @@ class Dev(Configuration):
     ACCOUNT_AUTHENTICATION_METHOD = "email"
     LOGOUT_REDIRECT_URL = 'index'
 
+    CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
     # Application definition
 
     INSTALLED_APPS = [
+        'ckeditor',
         'blango_auth',
         'django_filters',
         'versatileimagefield',
@@ -263,8 +265,6 @@ class Dev(Configuration):
         "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
         "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     }
-
-
 
 class Prod(Dev):
     DEBUG = True

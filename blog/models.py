@@ -4,7 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
 from versatileimagefield.fields import VersatileImageField
-
+from ckeditor.fields import RichTextField
 
 class Comment(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -34,7 +34,7 @@ class Post(models.Model):
     title = models.TextField(max_length=100)
     slug = models.SlugField(unique=True)
     summary = models.TextField(max_length=500)
-    content = models.TextField(max_length=5000)
+    content = RichTextField(config_name='default')
     tags = models.ManyToManyField(Tag, related_name="posts")
     comments = GenericRelation(Comment)
     rating = models.FloatField(default=0.0)
