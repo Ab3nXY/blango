@@ -1,0 +1,47 @@
+
+        /* ckeditor_dark_theme.css */
+
+        /* Style the editor content */
+        .cke_editable {
+            background-color: #2e2e2e;
+            color: #f0f0f0;
+        }
+
+        /* Style the editor toolbar */
+        .cke_top {
+            background-color: #333333;
+            border-bottom: 1px solid #444444;
+        }
+
+        /* Style the editor dialog boxes */
+        .cke_dialog {
+            background-color: #333333;
+            color: #f0f0f0;
+        }
+
+        .cke_dialog_body {
+            background-color: #2e2e2e;
+            color: #f0f0f0;
+        }
+
+        .cke_dialog_footer {
+            background-color: #333333;
+        }
+
+        .cke_button__bold_icon,
+        .cke_button__italic_icon,
+        .cke_button__underline_icon,
+        .cke_button__numberedlist_icon,
+        .cke_button__bulletedlist_icon,
+        .cke_button__indent_icon,
+        .cke_button__outdent_icon,
+        .cke_button__link_icon,
+        .cke_button__unlink_icon,
+        .cke_button__removeformat_icon,
+        .cke_button__fontsize_icon {
+            filter: invert(1);
+        }
+
+
+        /* Add any additional styles as needed */
+

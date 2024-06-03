@@ -12,6 +12,7 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
         <script>
           function set_slug(title) {
             // Replace spaces with underscores and convert to lowercase
@@ -20,15 +21,19 @@
             document.getElementById('id_slug').value = slug;
           }
 
-          document.addEventListener("DOMContentLoaded", function() {
-            CKEDITOR.replace('id_content', {
-              height: 600,
-              width: 732,
-              toolbar: 'Custom',
-              contentsCss: '/static/css/ckeditor_dark_theme.css',
-              bodyClass: 'dark-theme'
+            document.addEventListener("DOMContentLoaded", function() {
+                var editorHeight = window.innerWidth < 768 ? '300px' : '600px';  // Adjust height based on screen width
+                var editorWidth = window.innerWidth < 768 ? '100%' : '732px';   // Adjust width based on screen width
+
+                CKEDITOR.replace('id_content', {
+                    height: editorHeight,
+                    width: editorWidth,
+                    toolbar: 'Custom',
+                    contentsCss: '/static/css/ckeditor_dark_theme.css',
+                    bodyClass: 'dark-theme'
+                });
             });
-          });
+
 
 
         </script>
