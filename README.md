@@ -1,3 +1,15 @@
+Demo Website: [BlogApp](https://ab3nxy.pythonanywhere.com/)        Demo Video: [BlogApp on Youtube](https://youtu.be/92fWLih0-Ws)
+
+![Landing Page](https://github.com/Ab3nXY/blango/assets/127937158/d298b581-e749-4462-a5f6-cfa19baff10a)
+![Registration](https://github.com/Ab3nXY/blango/assets/127937158/cee6aed1-721a-40ec-a257-76f97d0ac30b)
+![Login](https://github.com/Ab3nXY/blango/assets/127937158/8cf34b7a-15e2-4d91-a249-3a86c4f2ed5d)
+![Creat Blog](https://github.com/Ab3nXY/blango/assets/127937158/a7679486-d6f6-4291-9419-acfc8bb2fba7)
+![Blog detail](https://github.com/Ab3nXY/blango/assets/127937158/5d43ff7e-5336-4ef7-9fdd-23f1078a4d46)
+![Comment and share section](https://github.com/Ab3nXY/blango/assets/127937158/e963538e-fd52-4c5d-8d41-5bb538bcb25f)
+![DRF](https://github.com/Ab3nXY/blango/assets/127937158/a74c901a-adec-4561-924a-f4af496ddf23)
+![DRF blogs](https://github.com/Ab3nXY/blango/assets/127937158/f51a922e-826f-48bb-bc9a-4b3fc89b8594)
+![DRF filter](https://github.com/Ab3nXY/blango/assets/127937158/04b6fe8b-8b04-4005-ab45-66ac26ae1433)
+
 # Blango: A Blog Writing App with REST API and IBM watson for sentimental analysis
 ## Features
 
